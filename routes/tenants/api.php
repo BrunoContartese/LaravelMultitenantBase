@@ -8,7 +8,7 @@ Route::middleware([
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
-    Route::prefix('/tenants/api/v1')->group(function () {
+    Route::prefix('/tenants/api')->group(function () {
         @require('modules/users.php');
     });
 });
