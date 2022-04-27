@@ -9,6 +9,7 @@ Route::middleware([
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
     Route::prefix('/tenants/api')->group(function () {
+        @require('modules/login.php');
         @require('modules/users.php');
     });
 });
