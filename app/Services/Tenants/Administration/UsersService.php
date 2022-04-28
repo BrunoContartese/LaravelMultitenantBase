@@ -4,6 +4,7 @@ namespace App\Services\Tenants\Administration;
 
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class UsersService
@@ -45,7 +46,15 @@ class UsersService
     {
         try {
             DB::beginTransaction();
-            $user = User::create($request->all());
+            $input = $request->all();
+            $input['password'] = Hash::make($input['password']);
+
+            $user = User::create($input);
+
+            if($request->has('roles')) {
+                $user->syncRoles($request->roles);
+            }
+
             DB::commit();
             return $user;
         } catch (\Error $e) {
@@ -64,7 +73,17 @@ class UsersService
         try {
             DB::beginTransaction();
             $user = User::with($this->relations)->findOrFail($id);
-            $user->update($request->all());
+            $input = $request->all();
+            if($request->has('password')) {
+                $input['password'] = Hash::make($input['password']);
+            }
+
+            $user->update($input);
+
+            if($request->has('roles')) {
+                $user->syncRoles($request->roles);
+            }
+
             DB::commit();
             return $user;
         } catch (\Error $e) {

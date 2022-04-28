@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Tenants\Administration;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Pagination\PaginatorRequest;
+use App\Http\Requests\Tenants\Administration\Users\StoreUserRequest;
+use App\Http\Requests\Tenants\Administration\Users\UpdateUserRequest;
 use App\Http\Requests\Tenants\DefaultQueryParamsRequest;
 use App\Services\Tenants\Administration\UsersService;
 use Illuminate\Http\Request;
@@ -24,7 +26,7 @@ class UsersController extends Controller
         return response()->json($users, Response::HTTP_OK);
     }
 
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
         $user = $this->service->store($request);
         return response()->json($user, Response::HTTP_CREATED);
@@ -36,7 +38,7 @@ class UsersController extends Controller
         return response()->json($user, Response::HTTP_OK);
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, $id)
     {
         $user = $this->service->update($request, $id);
         return response()->json($user, Response::HTTP_OK);
